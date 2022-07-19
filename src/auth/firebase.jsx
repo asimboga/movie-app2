@@ -1,17 +1,46 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBMqJ-Y6xIAMCnbknqyBqk6SRn133vHBcw",
-    authDomain: "movie-app-asim.firebaseapp.com",
-    projectId: "movie-app-asim",
-    storageBucket: "movie-app-asim.appspot.com",
-    messagingSenderId: "99194080789",
-    appId: "1:99194080789:web:c7e7b58240f4873f6d081c",
-    measurementId: "G-VRPLQ98FYP"
-  };
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_TMDB_KEY,
+};
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  export const auth = getAuth(app);
+export const createUser = async (email, password, navigate) => {
+  try {
+    let userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    navigate();
+    console.log(userCredential);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const signIn = async (email, password, navigate) => {
+  try {
+    let userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    navigate("/");
+    console.log(userCredential);
+  } catch (error) {
+    console.log(error);
+  }
+};
+

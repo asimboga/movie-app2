@@ -1,10 +1,18 @@
-import React, { children, createContext } from "react";
-import { useState } from "react";
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { createContext } from 'react';
+import { userObserver } from '../auth/firebase';
 
 export const AuthContext = createContext();
 
+
 const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(true);
+  const [currentUser, setCurrentUser] = useState(false);
+
+  useEffect(() => {
+    userObserver(setCurrentUser);
+  }, []);
+
   return (
     <AuthContext.Provider value={{ currentUser }}>
       {children}

@@ -7,15 +7,14 @@ const Register = () => {
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-        e.preventDefault()
+    e.preventDefault();
+    const displayName = `${firstName} ${lastName}`;
     console.log(firstName, lastName);
-    createUser(email, password, navigate)
-    navigate("/")
-  }
-
+    createUser(email, password, navigate, displayName);
+  };
 
   return (
     <div className="d-flex justify-content-center">

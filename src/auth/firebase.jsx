@@ -4,11 +4,17 @@ import {
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
 } from 'firebase/auth';
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+  toastWarnNotify,
+} from '../helpers/ToastNotify';
 
 
 const firebaseConfig = {
@@ -34,12 +40,14 @@ export const createUser = async (email, password, navigate, displayName) => {
     await updateProfile(auth.currentUser, {
       displayName: displayName,
     });
+    toastSuccessNotify('Registered successfully!');
     navigate('/');
     console.log(userCredential);
   } catch (err) {
-    console.log(err);
+    toastErrorNotify(err.message);
   }
 };
+
 
 export const signIn = async (email, password, navigate) => {
   try {
@@ -49,14 +57,15 @@ export const signIn = async (email, password, navigate) => {
       password
     );
     navigate('/');
+    toastSuccessNotify('Logged in successfully!');
     console.log(userCredential);
   } catch (err) {
+    toastErrorNotify(err.message);
     console.log(err);
   }
 };
 
 export const userObserver = (setCurrentUser) => {
-
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setCurrentUser(user);
@@ -70,15 +79,25 @@ export const logOut = () => {
   signOut(auth);
 };
 
-
 export const signUpProvider = (navigate) => {
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider)
     .then((result) => {
       console.log(result);
       navigate('/');
+      toastSuccessNotify('Logged out successfully!');
     })
     .catch((error) => {
       console.log(error);
+    });
+};
+
+export const forgotPassword = (email) => {
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      toastWarnNotify('Please check your mail box!');
+    })
+    .catch((err) => {
+      toastErrorNotify(err.message);
     });
 };

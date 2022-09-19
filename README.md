@@ -1,3 +1,5 @@
+###Projenin canlısına aşağıdaki bağlantıdan ulaşabilirsiniz.
+
 ### https://movie-app2-asim.netlify.app/
 
 
